@@ -1,0 +1,192 @@
+<style>
+    /* ── App Shell ── */
+    .todo-app {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #f3f4f6;
+        color: #1f2937;
+        min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .app-header {
+        background: #1e293b;
+        color: white;
+        padding: 20px 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .app-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: white;
+        margin: 0;
+    }
+    .header-stats {
+        font-size: 13px;
+        color: #94a3b8;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* ── Add Task Bar ── */
+    .add-bar {
+        background: white;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 16px 32px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .task-input {
+        flex: 1;
+        padding: 10px 14px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 14px;
+        outline: none;
+    }
+    .task-input:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+    .add-btn {
+        padding: 10px 20px;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+    .add-btn:hover {
+        background: #2563eb;
+    }
+
+    /* ── Filter Tabs ── */
+    .filter-bar {
+        padding: 12px 32px;
+        display: flex;
+        gap: 8px;
+        background: white;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .filter-btn {
+        padding: 6px 14px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        background: white;
+        font-size: 13px;
+        cursor: pointer;
+        color: #374151;
+    }
+    .active {
+        border-color: #1e293b;
+        background: #1e293b;
+        color: white;
+    }
+
+    /* ── Task List ── */
+    .task-list {
+        padding: 20px 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    /* ── Empty State ── */
+    .empty-state {
+        text-align: center;
+        padding: 48px 20px;
+        color: #9ca3af;
+        font-size: 15px;
+    }
+
+    /* ── Summary Footer ── */
+    .summary-bar {
+        background: white;
+        border-top: 1px solid #e5e7eb;
+        padding: 12px 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .summary-stats {
+        display: flex;
+        gap: 24px;
+        font-size: 13px;
+        color: #6b7280;
+    }
+    .stat-value {
+        font-weight: 700;
+        color: #1f2937;
+    }
+    .clear-btn {
+        padding: 6px 14px;
+        border: 1px solid #dc2626;
+        border-radius: 6px;
+        background: white;
+        font-size: 12px;
+        cursor: pointer;
+        color: #dc2626;
+    }
+    .clear-btn:hover {
+        background: #fef2f2;
+    }
+</style>
+
+<!-- App Shell -->
+<div class="todo-app">
+
+    <!-- Header -->
+    <div class="app-header">
+        <h1 class="app-title">Todo App</h1>
+        <div class="header-stats">
+            <span anvil-var="total_count_label">0 tasks</span>
+            <span anvil-var="done_count_label">0 completed</span>
+        </div>
+    </div>
+
+    <!-- Add Task Bar -->
+    <div class="add-bar">
+        <input
+            anvil-var="task_input"
+            class="task-input"
+            type="text"
+            placeholder="What needs to be done?"
+            anvil-event-pressed_enter="add_task_click"
+        />
+        <button anvil-var="add_btn" class="add-btn" anvil-event-click="add_task_click">
+            Add Task
+        </button>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="filter-bar">
+        <button anvil-var="filter_all_btn" class="filter-btn active" anvil-event-click="filter_all_click">All</button>
+        <button anvil-var="filter_active_btn" class="filter-btn" anvil-event-click="filter_active_click">Active</button>
+        <button anvil-var="filter_done_btn" class="filter-btn" anvil-event-click="filter_done_click">Completed</button>
+    </div>
+
+    <!-- Task List Container (TaskItem sub-forms added here dynamically) -->
+    <div anvil-var="task_list" anvil-is-container class="task-list"></div>
+
+    <!-- Empty State -->
+    <div anvil-var="empty_state" class="empty-state">
+        No tasks yet. Add one above!
+    </div>
+
+    <!-- Summary Footer -->
+    <div class="summary-bar">
+        <div class="summary-stats">
+            <span><span anvil-var="active_count" class="stat-value">0</span> remaining</span>
+            <span><span anvil-var="done_count" class="stat-value">0</span> completed</span>
+        </div>
+        <button anvil-var="clear_done_btn" class="clear-btn" anvil-event-click="clear_done_click">
+            Clear Completed
+        </button>
+    </div>
+
+</div>
